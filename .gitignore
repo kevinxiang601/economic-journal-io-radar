@@ -1,0 +1,6 @@
+references/configuration.local.md
+__pycache__/
+*.pyc
+.DS_Store
+digests/
+papers/
