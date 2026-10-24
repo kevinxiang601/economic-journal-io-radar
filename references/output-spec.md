@@ -31,6 +31,8 @@ Map totals to stars:
 
 No target count or target star distribution is allowed.
 
+Environmental economics is secondary to the original search directions. Retain only four- or five-star papers with total at least 70/100 AND environmental topic fit at least 35/40. Environment must be central, or its intersection with IO/supply chains/platforms must be substantively close. Exclude environmental papers scoring one to three stars, and weak environmental links even if their total reaches 70, from both the main list and observation section. Record only aggregate exclusions in the audit; do not list these papers individually or add them to the cumulative included list. Never raise ratings to keep a candidate. Other primary directions retain their existing inclusion thresholds.
+
 ## File structure
 
 ```markdown
@@ -67,7 +69,7 @@ Include all eight journals and NBER in the coverage audit even if a main section
 
 Match all coauthors against the configured laureate roster when supplied. Bold matching names only, leaving other authors unbolded. Example: `**1.** **Daron Acemoglu**, Coauthor (YYYY-MM). **Title. JPE, Ahead of Print.（已下载）**`. Do not bold the entire author list or add an award label or separate laureate section. Selection and scoring depend on relevance and method, not awards.
 
-Append `（环境）` to every title selected through the environmental direction, both standalone and intersection papers. Place download status after it: `**Title. Journal, status.（环境）（已下载）**`. Apply `（环境）` in observation and cumulative records too. Do not create a separate environmental report or duplicate one study across directions. The DOI and normalized title used for deduplication exclude presentation markers.
+Append `（环境）` to every retained four- or five-star title selected through the environmental direction, both standalone and close intersection papers. Place download status after it: `**Title. Journal, status.（环境）（已下载）**`. Preserve `（环境）` in cumulative records. No environmental papers enter the observation section. Do not create a separate environmental report or duplicate one study across directions. The DOI and normalized title used for deduplication exclude presentation markers.
 
 Each paper has only one abstract presentation, labeled exactly `Abstract：`. Translate the complete author abstract into Chinese sentence by sentence, retain the original sentence order, and preserve all reported methods, qualifications, directions, and numerical results. Prefer idiomatic accuracy over word-for-word translation when a literal rendering would confuse a non-specialist, but do not add claims absent from the source. Do not place an English abstract beside it. Search the public abstract aggressively even when the full article is paywalled; a paywalled PDF does not imply a missing abstract. Use `Abstract：摘要暂缺` only after the publisher, DOI metadata, Crossref, author manuscript, institutional repository, RePEc/SSRN, and exact-title search all fail, and disclose the attempted channels in the coverage audit. `官方来源` is always the last bullet in the paper block.
 

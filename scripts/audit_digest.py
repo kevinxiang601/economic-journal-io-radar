@@ -47,6 +47,9 @@ def main() -> int:
 
     doi_values = [normalize_doi(x) for x in re.findall(r"https?://doi\.org/(10\.\d{4,9}/[^\s)]+)", text, re.I)]
     main_text = text.split("## 2星观察区", 1)[0]
+    observation = text.split("## 2星观察区", 1)[1].split("## 覆盖审计", 1)[0] if "## 2星观察区" in text else ""
+    if "（环境）" in observation:
+        errors.append("environmental papers must not enter the observation section")
     # A paper may legitimately link the same DOI again under “官方来源”.  Only
     # the canonical DOI field identifies entries for the duplicate check.
     main_dois = [
@@ -69,6 +72,16 @@ def main() -> int:
 
     blocks = re.split(r"(?=^\*\*\d+\.)", main_text, flags=re.M)[1:]
     for idx, block in enumerate(blocks, 1):
+        if "（环境）" in block.splitlines()[0]:
+            rating = re.search(r"贴合度[：:]\s*(★+)", block)
+            if not rating or len(rating.group(1)) not in (4, 5):
+                errors.append(f"environmental entry {idx} must be four or five stars")
+            score = re.search(r"(?:总分\s*)?(\d+)\s*/\s*100", block)
+            topic = re.search(r"议题(?:命中度|命中|分)?\s*[：:]?\s*(\d+)", block)
+            if not score or int(score.group(1)) < 70:
+                errors.append(f"environmental entry {idx} requires total >= 70")
+            if not topic or int(topic.group(1)) < 35:
+                errors.append(f"environmental entry {idx} requires topic fit >= 35")
         for field in ["- DOI：", "- 方向：", "- Abstract：", "- 官方来源：", "- 直白解释："]:
             if field not in block:
                 errors.append(f"main entry {idx} missing {field}")
