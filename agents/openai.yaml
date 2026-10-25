@@ -1,6 +1,6 @@
 interface:
-  display_name: "经济学顶刊与环境论文雷达"
-  short_description: "追踪八刊与NBER的IO、供应链、平台和环境论文"
-  default_prompt: "Use $economic-journal-io-radar to run this week's eight-journal and NBER radar, including standalone Top 5 environmental research and environmental intersections. Save full Chinese abstracts and star ratings, mark environmental titles （环境）, and mark verified downloads （已下载）."
+  display_name: "经济学与UTD24管理学论文雷达"
+  short_description: "隔周追踪经济学与UTD24的平台、AI和IO研究"
+  default_prompt: "Use $economic-journal-io-radar to run the calendar-selected economics or UTD24 management track. Prioritize relevance; management has at most 30 papers and economics is uncapped. Include complete Chinese abstracts, ratings, plain explanations and source-grounded research evaluations; put official sources last and mark only verified PDF downloads （已下载）."
 policy:
   allow_implicit_invocation: true

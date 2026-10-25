@@ -1,9 +1,15 @@
 ---
 name: economic-journal-io-radar
-description: "Track eight economics journals and NBER working papers with priority on IO, platforms, algorithmic competition, and AI intersections including AI and supply chains. Traditional supply networks are lower priority; optimization and transport-led papers are excluded or low relevance. Includes a selective environmental track, Chinese abstracts, audited ratings, historical deduplication, and verified PDF markers."
+description: "Produce alternating economics and UTD24 management literature radars focused on IO, platforms, AI, traditional equilibrium games and classical empirical designs. Economics covers eight journals plus selective NBER; management screens all UTD24 and retains at most 30 papers. Includes complete Chinese abstracts, research-mechanism evaluations, selective environmental coverage, cross-track deduplication and verified PDF markers."
 ---
 
-# Economic Journal IO Radar
+# Economics and Management Research Radar
+
+## Select the research track
+
+Support economics and management reports. Honor an explicit manual track; the management test on 2026-10-25 must not change the schedule. For scheduled runs, use Asia/Shanghai's run date and `scripts/select_track.py --date YYYY-MM-DD`: economics anchor Monday 2026-10-26, management 2026-11-02, economics 2026-11-09, alternating thereafter by calendar week even if a run is missed. Run only one track per scheduled week.
+
+Management mode reads [references/management.md](references/management.md) completely and replaces economics-only journal/NBER discovery with all UTD24 journals. The workflow below is the economics mode; shared abstract, deduplication, rating, download, and writing rules apply to both. Both tracks add the source-grounded `研究评价` paragraph defined in the management guide, using the user-requested `research-method-distiller` skill when available. Both report headers contain only the run window and discovery/screening line, not process explanations.
 
 Produce the weekly eight-journal radar plus NBER working papers. Read
 [references/configuration.md](references/configuration.md) for output paths and optional local overrides.
@@ -14,7 +20,7 @@ Research priority: IO, platforms, algorithmic pricing/collusion, and substantive
 ## Required workflow
 
 1. Read [references/sources.md](references/sources.md) and [references/output-spec.md](references/output-spec.md) completely.
-2. Read every existing `经济学顶刊速览-*.md` in the output directory before drafting. Build the historical set before screening, not afterward.
+2. Read every existing economics and management digest, their cumulative records, and configured additional research history before drafting. Build a cross-track, cross-version historical set before screening, not afterward. Economics has no paper-count cap; relevance comes before recency in both tracks.
    - When a laureate roster is configured, read it each run and extract the names from its overview table. Allow initials, omitted middle initials, accents, and name variants; verify identity rather than matching a surname alone.
 3. Create a temporary candidate manifest with `scripts/collect_candidates.py`:
    - use `--lookback 120 --openalex` for the first Codex migration run;
@@ -45,7 +51,7 @@ Research priority: IO, platforms, algorithmic pricing/collusion, and substantive
 - For primary IO/platform/AI directions, main sections contain 3–5 star papers after v2 gates. Conventional supply/network papers lacking a direct core mechanism have topic <=23 (at most three stars), and enter only for specific transferable research value. Optimization/transport-led papers have topic <=17 (at most two stars), default exclusion, with rare optional observation only for direct reusable content. These caps also apply to AI-branded versions of the same non-strategic problems. Environmental economics stays secondary: retain only closely relevant four/five-star papers (final>=70, environmental topic>=31/35, method>=28/45); exclude lower-rated environmental records from main/observation. An environmental label cannot override optimization/transport exclusions. Never inflate scores or fill a quota.
 - Append `（环境）` to each title retained through the environmental track, whether standalone environmental research or a close intersection with IO/supply chains/platforms. If downloaded, use `（环境）（已下载）`. Preserve the environmental marker in cumulative records. An energy-sector setting alone does not qualify: environment must be central to the question, mechanism, policy, or outcome. Use the same four-dimensional scoring, full abstract, explanation, and download rules, subject to the stricter environmental inclusion threshold above.
 - Use exactly one `Abstract：` field. It must be a complete Chinese rendering of the author's full abstract, covering every source sentence in the original order. Translate sentence by sentence faithfully, but use natural Chinese and explain or idiomatically render field-specific terms when a literal translation would be confusing. Do not include an English excerpt or a second abstract summary. A paywalled article normally still has a public abstract: if the publisher page is blocked, search DOI metadata, Crossref, an author manuscript, an institutional repository, RePEc, SSRN, and an exact-title web search before writing `Abstract：摘要暂缺`. Never reconstruct missing abstract content from a title or a secondary summary.
-- Put `官方来源` as the final line of every paper entry, after the three-sentence plain-language explanation.
+- Put `官方来源` as the final field of every paper entry, after the three-sentence plain-language explanation and research evaluation.
 - In each retained paper's author list, bold only the names matching the supplied laureate roster. Keep the other author names in normal text, so the emphasis is visible. Do not add a Nobel label, award year, special section, or explanatory badge. See the heading format in `references/output-spec.md`.
 - Internally account for all eight journals and NBER, channel differences, unresolved candidates, and continuation checkpoints. Keep these in existing task notes/working data rather than a user-facing report. After the papers, retain only useful optional observations and the cumulative inclusion list for deduplication. Omit coverage tables, counts, exclusion/download-failure lists and generic completion summaries; do not replace them with another user-facing audit file. A material uncertainty affecting a retained claim needs only a short local note. Search completeness requirements still apply even though the process is not narrated.
 - If two channels disagree and the conflict cannot be resolved, mark the item pending verification instead of guessing.

@@ -24,8 +24,7 @@ Environmental economics remains secondary: retain only closely relevant four/fiv
 # 经济学顶刊速览 — 方向筛选版（YYYY-MM-DD）
 
 - **运行窗口**：...
-- **收录口径**：官方首次上线即收录；后续卷期更新不重复收录
-- **评分口径**：v2（议题35／方法45／锚点10／延伸10；执行议题与方法门槛）
+- **发现与筛选**：候选 N 篇；历史重复 N 篇；本期收录 N 篇。
 
 ## AER（American Economic Review）
 
@@ -34,6 +33,7 @@ Environmental economics remains secondary: retain only closely relevant four/fiv
 - 方向：... ｜ 方法：结构IO ｜ 贴合度：★★★★（总分 83/100：议题 29/35，方法 37/45，锚点 9/10，延伸 8/10；具体模型、识别和反事实的借鉴价值）
 - Abstract：作者完整摘要的中文翻译。逐句对应原文、保持原句顺序和全部信息；术语应按语境自然意译，必要时用括号做一句话解释，不能机械直译。
 - 直白解释：固定三句话。第一句说现实问题；第二句说怎么做和发现什么；第三句说为什么值得用户读。
+- 研究评价：基于原文评价关键机制、相对基准的增量或实证识别与创意；使用research-method-distiller指导。
 - 官方来源：[Publisher abstract](...)
 
 ## 2星观察区
@@ -48,6 +48,8 @@ Environmental economics remains secondary: retain only closely relevant four/fiv
 NBER entries additionally include one concise field before Abstract: `- 入选依据：直接议题｜具体问题和机制` or `- 入选依据：方法或视角贡献｜原文支持的具体贡献及用途`. For a three-star NBER entry, use the contribution route and demonstrate the insight/design and research use. Neither research-domain labels nor generic transfer claims are sufficient. Keep official sources last.
 
 The finished digest is a reading document, not a run report. After the papers, keep only a genuinely useful optional observation section and the cumulative inclusion list needed for future deduplication. Use the exact heading `## 2星观察区` only when there are retained observations; omit it when empty. Do not append coverage tables, candidate/exclusion totals, channel-by-channel status, RSS/CLI logs, download-failure inventories, generic conclusions, or a completion report. Do not create another user-facing audit/download file instead.
+
+For both research tracks, the header after the dated title contains exactly `运行窗口` and `发现与筛选`. Omit standalone scope, first-online-policy, scoring-version and completion paragraphs from that header. Screening counts belong only in its concise discovery line. Read `management.md` for the new research-evaluation paragraph shared by both tracks. Economics has no count cap; management has at most30 papers, with relevance before recency and no low-fit filling.
 
 Maintain coverage, channel differences, unresolved candidates, exclusions and continuation checkpoints internally in the task's existing notes or working data; examine all eight journals and NBER even when no details appear in the digest. Keep the cumulative list with stable DOI/NBER IDs, normalized title, first inclusion date, publication status and known cross-version links. Do not add rejected or unverified candidates to that list. A material unresolved verification limit may warrant one short note in the affected journal/paper; preserve it when it changes how a reader should interpret a claim, rather than displaying process detail by default.
 

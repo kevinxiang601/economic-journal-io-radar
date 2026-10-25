@@ -91,15 +91,23 @@ def request_json(url: str, attempts: int = 4, timeout: int = 25) -> dict:
 def parse_history(history_dir: Path) -> tuple[set[str], set[str], list[str]]:
     dois: set[str] = set()
     titles: set[str] = set()
-    files = sorted(history_dir.glob("经济学顶刊速览-*.md"))
-    bold_entry = re.compile(r"^\*\*\d+\.\s+.*?\((?:19|20)\d{2}(?:-\d{2}){0,2}\)\.\s+(.+?)\.\s+(?:AER|JPE|QJE|JET|IIO|RAND J|Econometrica|ReStud)[,\.]", re.M)
-    list_entry = re.compile(r"^\d+\.\s+.*?\((?:19|20)\d{2}(?:-\d{2}){0,2}\)\.\s+(.+?)\.\s+(?:AER|JPE|QJE|JET|IIO|RAND J|Econometrica|ReStud)\b", re.M)
-    doi_re = re.compile(r"(?:https?://doi\.org/|\bdoi:\s*)(10\.\d{4,9}/[-._;()/:a-z0-9]+)", re.I)
+    files = sorted(history_dir.glob("*.md"))
+    names = list(JOURNALS) + ['NBER', 'American Economic Review', 'Journal of Political Economy',
+                            'Quarterly Journal of Economics', 'Journal of Economic Theory',
+                            'International Journal of Industrial Organization', 'Review of Economic Studies']
+    registry = Path(__file__).parent.parent / 'references/management-journals.json'
+    if registry.exists():
+        names += [j['name'] for j in json.loads(registry.read_text())]
+    journal_pattern = '|'.join(re.escape(n) for n in sorted(names, key=len, reverse=True))
+    list_entry = re.compile(rf"^\d+\.\s+.*?\((?:19|20)\d{{2}}(?:-\d{{2}}){{0,2}}\)\.\s+(.+?)[.!?]\s+(?:{journal_pattern})\b", re.M)
+    cumulative_entry = re.compile(r"^\d+\.\s+(.+?)\s+[｜|]\s+[^｜|\n]+[｜|]", re.M)
+    # Cumulative rows may contain a bare DOI; old reports may have no DOI at all.
+    doi_re = re.compile(r"\b(10\.\d{4,9}/[-._;()/:a-z0-9]+)", re.I)
     for path in files:
         text = path.read_text(encoding="utf-8").replace("**", "")
         for match in doi_re.finditer(text):
             dois.add(normalize_doi(match.group(1).rstrip(".,;)")))
-        for pattern in (bold_entry, list_entry):
+        for pattern in (list_entry, cumulative_entry):
             for match in pattern.finditer(text):
                 title = normalize_title(match.group(1))
                 if title:
@@ -162,7 +170,8 @@ def topical_hits(title: str, abstract: str) -> dict[str, list[str]]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--history-dir", type=Path, required=True)
+    parser.add_argument("--history-dir", type=Path, action="append", required=True,
+                        help="repeat for economics, management and additional history directories")
     parser.add_argument("--lookback", type=int, default=45)
     parser.add_argument("--as-of", default=dt.date.today().isoformat())
     parser.add_argument("--openalex", action="store_true")
@@ -171,7 +180,10 @@ def main() -> int:
 
     as_of = dt.date.fromisoformat(args.as_of)
     since = as_of - dt.timedelta(days=args.lookback)
-    history_dois, history_titles, history_files = parse_history(args.history_dir)
+    history_dois, history_titles, history_files = set(), set(), []
+    for directory in args.history_dir:
+        ds, ts, fs = parse_history(directory)
+        history_dois.update(ds); history_titles.update(ts); history_files.extend(fs)
     manifest = {
         "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "as_of": as_of.isoformat(),

@@ -1,8 +1,14 @@
-# Economic Journal IO & Environment Radar
+# Economics & UTD24 Management Research Radar
 
-一个以产业组织、平台经济、算法竞争与AI交叉为重点的 Codex 文献追踪技能。传统供应链/生产网络为低优先级，环境经济学为精选次级方向。输出逐篇核验、历史去重的中文 Markdown 速览，支持完整逐句中文摘要、四维评星、诺奖作者姓名强调与已下载标记。
+一个以产业组织、平台经济、算法竞争与AI交叉为重点的 Codex 文献追踪技能，支持经济学与管理学隔周轮换，也支持手动指定模式。传统供应链/生产网络为低优先级，环境经济学为精选次级方向。输出逐篇核验、跨系列去重的中文 Markdown 速览，包含完整逐句中文摘要、四维评星、研究机制评价、诺奖作者姓名强调与已下载标记。
 
 ## 范围
+
+经济学不设篇数上限，管理学每期最多30篇，均以关联度、具体贡献与方法可借鉴性优先，发表时间作为次级取舍依据。管理学先扫描45天候选，可收窄主要窗口，但要回查略早的高关联论文，不用新近弱关联论文凑数量。
+
+管理学严格限UTD24、24刊全部检查。除MS、Marketing Science、MSOM、POM、JM、JMR，还深入ISR、MISQ、Organization Science、SMJ、JCR、JOM等的相关研究；会计、金融等期刊同样扫描后按贡献筛选。完整名单与检索入口见[UTD24目录](references/management-journals.json)，流程见[管理学模式](references/management.md)。优先传统均衡博弈、合同与信息设计，以及DID、IV、RD/RDD、DDD、实验、清晰的结构IO；算法博弈与算法性能主导的工作通常排除，陌生估计方法本身为主要创新的工作降低方法适配分。管理学不纳入NBER或UTD24之外论文。
+
+经济学范围如下：
 
 - 原七刊：AER、JPE、QJE、JET、IIO、RAND Journal of Economics、Econometrica。
 - 补充 ReStud（Review of Economic Studies）的环境方向，使独立环境研究覆盖完整经济学 Top 5：AER、JPE、QJE、Econometrica、ReStud。
@@ -17,7 +23,7 @@ NBER采用精选的两条入选路径：直接命中研究主线，或在IO、�
 
 ## 输出
 
-按期刊分类、星级与最终分降序，每篇包括作者、发表状态、DOI、方法类型、四维分数、完整中文摘要、三句话通俗解释和末尾来源链接。环境方向标题带 `（环境）`，验证下载成功后带 `（环境）（已下载）`。主要方向在议题与方法门槛通过后维持 3–5 星主清单，2 星为可选观察。环境仍是次级搜索，只收密切相关的四、五星论文（最终分至少70，环境议题至少31/35，方法至少28/45）；一至三星环境论文均不列正文或观察区。
+开头仅保留运行窗口和发现与筛选。正文按期刊分类、星级与最终分降序，每篇包括作者、发表状态、DOI、方法类型、四维分数、完整中文摘要、三句话通俗解释、研究评价和末尾来源链接。研究评价可结合用户安装的`research-method-distiller`：理论解释真实基准、关键变量或制度如何改变激励与结论；实证解释识别或数据创意、经济发现和具体借鉴价值。评价以可核实原文为依据，不强行编造新增变量或反直觉结果。环境方向标题带 `（环境）`，验证下载成功后带 `（环境）（已下载）`。主要方向在议题与方法门槛通过后维持 3–5 星主清单，2 星为可选观察。环境仍是次级搜索，只收密切相关的四、五星论文（最终分至少70，环境议题至少31/35，方法至少28/45）；一至三星环境论文均不列正文或观察区。
 
 评分v2：议题35分、方法45分、文献锚点10分、研究延伸10分。优先博弈论模型、structural IO，再重点考察可信的DID、RD/RDD、DDD、IV、RCT等因果设计。货币、宏观、金融等论文若仅借用寡头、价格或市场势力设定，不能靠方法复杂而评四五星；方法名称和期刊/作者声望均不自动加分。具体分档和硬上限见 [评分规则](references/scoring.md)。历史评分保留原口径。
 
@@ -31,7 +37,7 @@ NBER采用精选的两条入选路径：直接命中研究主线，或在IO、�
 git clone https://github.com/kevinxiang601/economic-journal-io-radar.git ~/.codex/skills/economic-journal-io-radar
 ```
 
-目录已存在时，先保留原有本地配置，再合并更新。默认输出到任务目录的 `digests/` 和 `papers/`。可创建 `references/configuration.local.md`，填写自己的速览目录、论文目录、可选诺奖名单路径和时区；该文件不会提交到 Git。
+目录已存在时，先保留原有本地配置，再合并更新。经济学默认输出到任务目录的 `digests/` 和 `papers/`，管理学为`management-digests/`和`management-papers/`。可创建 `references/configuration.local.md`，填写两类速览和论文目录、可选诺奖名单路径和时区；该文件不会提交到 Git。
 
 在 Codex 中调用：
 
@@ -42,10 +48,13 @@ git clone https://github.com/kevinxiang601/economic-journal-io-radar.git ~/.code
 辅助检索与检查：
 
 ```sh
-python3 scripts/collect_candidates.py --history-dir ./digests --lookback 45 --as-of YYYY-MM-DD --openalex --output /tmp/radar-candidates.json
+python3 scripts/collect_candidates.py --history-dir ./digests --history-dir ./management-digests --lookback 45 --as-of YYYY-MM-DD --openalex --output /tmp/radar-candidates.json
 python3 scripts/audit_digest.py ./digests/经济学顶刊速览-YYYY-MM-DD.md
+python3 scripts/collect_management.py --history-dir ./digests --history-dir ./management-digests --lookback 45 --as-of YYYY-MM-DD --openalex --output /tmp/management-candidates.json
+python3 scripts/audit_digest.py ./management-digests/管理学顶刊速览-YYYY-MM-DD.md --candidates /tmp/management-candidates.json
+python3 scripts/select_track.py --date YYYY-MM-DD --anchor 2026-10-26
 ```
 
 脚本负责候选发现、提示与格式检查，研究筛选、摘要核验和评分仍需 Codex 结合原始来源判断。NBER/RSS 的补查流程见 `references/nber-rss.md`。
 
-本仓库仅包含技能、参考规则和辅助脚本；不包含个人论文、速览历史、个人路径配置或计划任务状态。周计划请在自己的 Codex 中创建并指定输出目录；本地执行需要电脑和应用可用。全文仅从合法公开来源下载。
+轮换按日历周计算：默认2026-10-26为经济学锚点，2026-11-02管理学，2026-11-09经济学。可用`--anchor`指定另一个经济学周一；手动测试和漏跑均不改变轮换顺序。本仓库仅包含技能、参考规则和辅助脚本；不包含个人论文、速览历史、个人路径配置或计划任务状态。周计划请在自己的 Codex 中创建并指定输出目录；本地执行需要电脑和应用可用。全文仅从合法公开来源下载。

@@ -32,11 +32,13 @@ def cjk_count(value: str) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("path", type=Path)
+    parser.add_argument("--candidates", type=Path, help="management registry candidate JSON for DOI/journal checks")
     args = parser.parse_args()
     text = args.path.read_text(encoding="utf-8")
     errors: list[str] = []
     warnings: list[str] = []
-    scoring_v2 = bool(re.search(r"评分口径[^\n]*v2", text))
+    scoring_v2 = bool(re.search(r"评分口径[^\n]*v2|议题\s*\d+/35[，,]\s*方法\s*\d+/45", text))
+    management = text.startswith("# 管理学顶刊速览")
 
     required_sections = ["## 已收录清单（累计）"]
     for section in required_sections:
@@ -79,6 +81,26 @@ def main() -> int:
         errors.append("legacy abstract excerpt label found; use exactly `Abstract：`")
 
     blocks = re.split(r"(?=^\*\*\d+\.)", main_text, flags=re.M)[1:]
+    if management:
+        headings = re.findall(r"^## ([^\s（(]+)", main_text, re.M)
+        journal_registry = json.loads((Path(__file__).parent.parent / "references/management-journals.json").read_text())
+        allowed_codes = {j['code'] for j in journal_registry}
+        unknown = set(headings) - allowed_codes
+        if unknown:
+            errors.append(f"non-UTD24 management section: {sorted(unknown)}")
+    if scoring_v2 and "- 研究评价：" in main_text:
+        header = re.split(r"^## ", main_text, maxsplit=1, flags=re.M)[0]
+        fields = re.findall(r"^- \*\*([^*]+)\*\*", header, re.M)
+        if fields != ['运行窗口', '发现与筛选']:
+            errors.append("header must contain only run window and discovery/screening fields")
+    if management and len(blocks) + len(re.findall(r"^\s*(?:[-*]|\d+\.)\s+\*\*", observation, re.M)) > 30:
+        errors.append("management report exceeds 30 papers including observations")
+    if management and args.candidates:
+        registry = json.loads(args.candidates.read_text(encoding="utf-8"))
+        allowed = {normalize_doi(a['doi']) for j in registry['journals']
+                   if j['journal']['code'] in allowed_codes for a in j['candidates']}
+        if set(main_dois) - allowed:
+            errors.append("management main DOI missing from UTD24 candidate inventory")
     for idx, block in enumerate(blocks, 1):
         environment = "（环境）" in block.splitlines()[0]
         if scoring_v2:
@@ -124,6 +146,8 @@ def main() -> int:
         for field in ["- DOI：", "- 方向：", "- Abstract：", "- 官方来源：", "- 直白解释："]:
             if field not in block:
                 errors.append(f"main entry {idx} missing {field}")
+        if scoring_v2 and "- 研究评价：" not in block:
+            errors.append(f"main entry {idx} missing research evaluation")
         abstract = re.search(r"^- Abstract：(.+)$", block, re.M)
         if abstract and "摘要暂缺" not in abstract.group(1):
             if cjk_count(abstract.group(1)) < 80:
@@ -136,7 +160,9 @@ def main() -> int:
         explanation = re.search(r"^- 直白解释：(.+)$", block, re.M)
         if explanation:
             sentence_count = len(re.findall(r"[。！？!?]", explanation.group(1)))
-            if sentence_count < 3:
+            if scoring_v2 and sentence_count != 3:
+                errors.append(f"main entry {idx} plain explanation must have exactly three sentences")
+            elif sentence_count < 3:
                 warnings.append(f"main entry {idx} plain explanation may have fewer than three sentences")
         if "- 中文摘要转述：" in block or "- Abstract（原文摘录）：" in block:
             errors.append(f"main entry {idx} contains a second or legacy abstract field; remove it")
@@ -144,6 +170,9 @@ def main() -> int:
         explanation_pos = block.rfind("- 直白解释：")
         if official_pos < explanation_pos:
             errors.append(f"main entry {idx} official source must be the final field")
+        fields = re.findall(r"^(- [^\n]+)$", block, re.M)
+        if fields and not fields[-1].startswith('- 官方来源：'):
+            errors.append(f"main entry {idx} official source is not the last field")
 
     if not doi_values:
         warnings.append("no DOI links detected")
