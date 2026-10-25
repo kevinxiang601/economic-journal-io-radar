@@ -21,7 +21,7 @@ Also query Crossref by ISSN on every run. Query OpenAlex when reachable and use 
 2. Add candidates found only by OpenAlex/RePEc/exact-title search, then verify them at the DOI or publisher page.
 3. Normalize DOI by lowercasing and removing `https://doi.org/`, `http://dx.doi.org/`, and `doi:`. Normalize titles by Unicode NFKD, removing punctuation, and collapsing whitespace.
 4. For set differences, determine whether the record is a correction, front/back matter, issue information, delayed DOI deposit, or a genuine missing research article.
-5. Record per-journal counts and unresolved differences in the coverage audit.
+5. Record per-journal counts, checked channels and unresolved differences internally in existing task notes or working data. They support completeness and resumption, not a user-facing report appendix.
 
 ## Metadata authority
 
@@ -37,5 +37,5 @@ Social posts, newsletters, institutional explainers, WeChat, and Xiaohongshu can
 
 - A blocked official page is not proof that the article is absent.
 - When an official page is blocked, use DOI metadata plus one other structured source and say which official channel was inaccessible.
-- When fewer than two channels are successfully checked for a journal, label that journal's audit status `未完成交叉核验`.
+- When fewer than two channels are successfully checked for a journal, mark internal status `未完成交叉核验`; retain only a short local note in the digest if the limitation materially affects a retained claim.
 - Do not call the run complete while an unexplained set difference remains.

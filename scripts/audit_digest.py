@@ -38,13 +38,14 @@ def main() -> int:
     warnings: list[str] = []
     scoring_v2 = bool(re.search(r"评分口径[^\n]*v2", text))
 
-    required_sections = ["## 2星观察区", "## 覆盖审计", "## 已收录清单（累计）"]
+    required_sections = ["## 已收录清单（累计）"]
     for section in required_sections:
         if section not in text:
             errors.append(f"missing required section: {section}")
 
-    audit = text.split("## 覆盖审计", 1)[1] if "## 覆盖审计" in text else ""
-    for journal in JOURNALS:
+    # Coverage is recorded internally in new digests; validate legacy appendices if present.
+    audit = text.split("## 覆盖审计", 1)[1].split("## 已收录清单（累计）", 1)[0] if "## 覆盖审计" in text else None
+    for journal in JOURNALS if audit is not None else []:
         # Archived reports may predate these added discovery channels.
         if not scoring_v2 and journal in ("ReStud", "NBER") and journal not in text:
             continue
@@ -52,8 +53,9 @@ def main() -> int:
             errors.append(f"coverage audit does not mention {journal}")
 
     doi_values = [normalize_doi(x) for x in re.findall(r"https?://doi\.org/(10\.\d{4,9}/[^\s)]+)", text, re.I)]
-    main_text = text.split("## 2星观察区", 1)[0]
-    observation = text.split("## 2星观察区", 1)[1].split("## 覆盖审计", 1)[0] if "## 2星观察区" in text else ""
+    main_text = re.split(r"^## (?:2星观察区|覆盖审计|已收录清单（累计）)\s*$", text, maxsplit=1, flags=re.M)[0]
+    observation_match = re.search(r"^## 2星观察区\s*\n(.*?)(?=^## |\Z)", text, re.M | re.S)
+    observation = observation_match.group(1) if observation_match else ""
     if "（环境）" in observation:
         errors.append("environmental papers must not enter the observation section")
     # A paper may legitimately link the same DOI again under “官方来源”.  Only
