@@ -61,6 +61,12 @@ Each paper has only one abstract presentation, labeled exactly `Abstract：`. Tr
 
 For the first Codex run, add `## 历史漏检补录` if older online-first papers are newly discovered. Do not relabel them as this week's new publications.
 
+## Writing pass
+
+Use the user's `anti-defensive-writing` skill when available. For explanations, admission/rating reasons and necessary notes, lead with the actual research question, finding or contribution. Remove habitual hedges, hypothetical objections, repetitive modesty, and generic endings such as `但不能直接推广` or `仍需结合具体情况` when they add no specific information. A real limitation affecting causal interpretation, application or evidence belongs once in the relevant sentence, stated precisely; do not append a disclaimer to every paper. Keep the three-sentence explanation format and its substantive reading value.
+
+The full Abstract is a source-faithful translation, not a discretionary summary: retain all sentences, conditions, uncertainty, contrasts, numbers and unfavorable findings from the source. Improve Chinese phrasing without deleting qualifications or turning association into causation. Keep the two kinds of text distinct: faithful abstract translation and concise original explanation. If the separate writing skill is absent in another installation, apply these rules directly.
+
 ## Paper download handoff
 
 Use a dated subfolder under the configured paper directory (see `configuration.md`).
