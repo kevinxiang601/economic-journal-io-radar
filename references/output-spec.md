@@ -51,6 +51,8 @@ Environmental economics remains secondary: retain only closely relevant four/fiv
 1. Title ｜ Journal ｜ DOI 或 `DOI暂缺` ｜ 首次收录 YYYY-MM-DD ｜ 当前状态
 ```
 
+NBER entries additionally include one concise field before Abstract: `- 入选依据：直接议题｜具体问题和机制` or `- 入选依据：方法或视角贡献｜原文支持的具体贡献及用途`. For a three-star NBER entry, use the contribution route and demonstrate the insight/design and research use. Neither research-domain labels nor generic transfer claims are sufficient. Keep official sources last.
+
 Include all eight journals and NBER in the coverage audit even if a main section has zero additions. Order journal sections AER/JPE/QJE/JET/IIO/RAND J/Econometrica/ReStud, then NBER, then observation/audit/cumulative records. Within each journal, order by stars, final score, and first-online date descending. Use `Online First` or `Articles in Press` when volume/issue/pages are not yet assigned.
 
 Match all coauthors against the configured laureate roster when supplied. Bold matching names only, leaving other authors unbolded. Example: `**1.** **Daron Acemoglu**, Coauthor (YYYY-MM). **Title. JPE, Ahead of Print.（已下载）**`. Do not bold the entire author list or add an award label or separate laureate section. Selection and scoring depend on relevance and method, not awards.

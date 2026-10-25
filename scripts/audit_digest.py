@@ -102,6 +102,13 @@ def main() -> int:
                     errors.append(f"v2 entry {idx}: {exc}")
             if not re.search(r"[｜|]\s*方法[：:]\s*[^｜|\n]+", block):
                 errors.append(f"v2 entry {idx} missing method type in direction line")
+            if re.search(r"\bNBER\b", block.splitlines()[0]):
+                admission = re.search(r"^- 入选依据：(直接议题|方法或视角贡献)[｜|](\S[^\n]*)$", block, re.M)
+                if not admission:
+                    errors.append(f"v2 NBER entry {idx} requires specific topic or method/perspective admission evidence")
+                rating = re.search(r"贴合度[：:]\s*(★+)", block)
+                if rating and len(rating.group(1)) == 3 and admission and admission.group(1) != "方法或视角贡献":
+                    errors.append(f"three-star NBER entry {idx} must demonstrate a method/perspective contribution")
         elif environment:
             rating = re.search(r"贴合度[：:]\s*(★+)", block)
             if not rating or len(rating.group(1)) not in (4, 5):
