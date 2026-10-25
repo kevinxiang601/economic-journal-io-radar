@@ -1,6 +1,6 @@
 ---
 name: economic-journal-io-radar
-description: "Track eight economics journals and NBER working papers for industrial organization, supply chains, platforms, and environmental economics. Includes standalone environmental research in the economics Top 5, full Chinese abstracts, audited star ratings, historical deduplication, and verified PDF download markers. Use for weekly radar or manual catch-up runs."
+description: "Track eight economics journals and NBER working papers with priority on IO, platforms, algorithmic competition, and AI intersections including AI and supply chains. Traditional supply networks are lower priority; optimization and transport-led papers are excluded or low relevance. Includes a selective environmental track, Chinese abstracts, audited ratings, historical deduplication, and verified PDF markers."
 ---
 
 # Economic Journal IO Radar
@@ -8,6 +8,8 @@ description: "Track eight economics journals and NBER working papers for industr
 Produce the weekly eight-journal radar plus NBER working papers. Read
 [references/configuration.md](references/configuration.md) for output paths and optional local overrides.
 Treat older WorkBuddy material only as history and visual reference; do not invoke or inherit its search logic.
+
+Research priority: IO, platforms, algorithmic pricing/collusion, and substantive AI intersections come first. AI and supply chains qualify when AI changes strategic interaction, information, contracts, market structure, or firm behavior; conventional supply/production networks are lower priority, not a coequal primary track. Optimization/operations algorithms and transport-led research are normally excluded. Apply the explicit relevance caps in `references/scoring.md`, including when such papers contain game theory or causal econometrics.
 
 ## Required workflow
 
@@ -39,7 +41,7 @@ Treat older WorkBuddy material only as history and visual reference; do not invo
 
 - First official online appearance counts as new. Later assignment to a volume or issue updates metadata but is not a new paper.
 - Deduplicate by normalized DOI first, then normalized title plus first author. Preserve the cumulative historical list.
-- For primary directions, main sections contain 3–5 star papers after v2 topic/method gates; two-star records are optional observations, and peripheral monetary/macro/finance papers are usually excluded. Environmental economics is secondary: retain only closely relevant four/five-star papers (final total >=70, environmental topic >=31/35, method >=28/45). Exclude environmental one-, two-, and three-star candidates from both main and observation sections; count them only in aggregate audit exclusions. Never inflate a score. Prioritize primary-direction discovery and do not expand environmental searches to fill a quota.
+- For primary IO/platform/AI directions, main sections contain 3–5 star papers after v2 gates. Conventional supply/network papers lacking a direct core mechanism have topic <=23 (at most three stars), and enter only for specific transferable research value. Optimization/transport-led papers have topic <=17 (at most two stars), default exclusion, with rare optional observation only for direct reusable content. These caps also apply to AI-branded versions of the same non-strategic problems. Environmental economics stays secondary: retain only closely relevant four/five-star papers (final>=70, environmental topic>=31/35, method>=28/45); exclude lower-rated environmental records from main/observation. An environmental label cannot override optimization/transport exclusions. Never inflate scores or fill a quota.
 - Append `（环境）` to each title retained through the environmental track, whether standalone environmental research or a close intersection with IO/supply chains/platforms. If downloaded, use `（环境）（已下载）`. Preserve the environmental marker in cumulative records. An energy-sector setting alone does not qualify: environment must be central to the question, mechanism, policy, or outcome. Use the same four-dimensional scoring, full abstract, explanation, and download rules, subject to the stricter environmental inclusion threshold above.
 - Use exactly one `Abstract：` field. It must be a complete Chinese rendering of the author's full abstract, covering every source sentence in the original order. Translate sentence by sentence faithfully, but use natural Chinese and explain or idiomatically render field-specific terms when a literal translation would be confusing. Do not include an English excerpt or a second abstract summary. A paywalled article normally still has a public abstract: if the publisher page is blocked, search DOI metadata, Crossref, an author manuscript, an institutional repository, RePEc, SSRN, and an exact-title web search before writing `Abstract：摘要暂缺`. Never reconstruct missing abstract content from a title or a secondary summary.
 - Put `官方来源` as the final line of every paper entry, after the three-sentence plain-language explanation.
