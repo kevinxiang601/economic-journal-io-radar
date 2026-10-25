@@ -12,26 +12,11 @@ Empirical work belongs in the main list when its question directly matches an el
 
 ## Auditable score
 
-Assign four integer subscores and show the total:
+Read [scoring.md](scoring.md) completely and use v2: topic 35, method 45, anchor 10, extension 10. Give game-theoretic modeling the highest methodological priority, followed by structural IO and credible DID/RD(RDD)/DDD/IV/RCT designs. Method names alone do not earn points. Main questions in monetary/macro/finance with only incidental oligopoly or pricing language cannot receive high relevance scores.
 
-- topic fit: 0–40
-- method fit: 0–25
-- anchor value: 0–20
-- research extensibility: 0–15
+Apply topic/method gates before assigning stars, using `scripts/score_paper.py`; the final score may be capped below the raw sum. Five stars require final >=85, topic >=28 and method >=36; four stars require final >=70, topic >=24 and method >=28; three stars require final >=55, topic >=18 and method >=20. Two-star records are optional observations, not a quota. No author-prestige, journal-prestige, or complexity bonus.
 
-For the environmental track, score topic fit against environmental research itself (not just IO overlap). A central environmental policy, externality, resource allocation, or green-transition question can earn 35–40 topic points. Method fit: rigorous game-theoretic/structural mechanisms or strong causal designs tied to a clear mechanism can earn 20–25; credible reduced-form causal work 16–22; descriptive correlations usually at most 12. Anchor value and extensibility must have concrete reasons, not journal prestige. A standalone Top 5 environmental paper can earn five stars when its question and method strongly match and its total is at least 85; absence of IO content is not a rating cap. Do not promote an environmental intersection automatically: relevance and evidence still determine the score. Explain the specific environmental reading value in the same three-sentence explanation.
-
-Map totals to stars:
-
-- 85–100: five stars, only when topic and method are both strong
-- 70–84: four stars, with at least one strong dimension
-- 55–69: three stars
-- 40–54: two stars, observation section only
-- below 40: exclude and count in the audit
-
-No target count or target star distribution is allowed.
-
-Environmental economics is secondary to the original search directions. Retain only four- or five-star papers with total at least 70/100 AND environmental topic fit at least 35/40. Environment must be central, or its intersection with IO/supply chains/platforms must be substantively close. Exclude environmental papers scoring one to three stars, and weak environmental links even if their total reaches 70, from both the main list and observation section. Record only aggregate exclusions in the audit; do not list these papers individually or add them to the cumulative included list. Never raise ratings to keep a candidate. Other primary directions retain their existing inclusion thresholds.
+Environmental economics remains secondary: retain only closely relevant four/five-star papers with topic >=31/35, method >=28/45 and final >=70. Lower-rated or weakly related environmental candidates are aggregate exclusions, never main/observation/cumulative entries. Do not inflate scores to pass thresholds.
 
 ## File structure
 
@@ -41,12 +26,13 @@ Environmental economics is secondary to the original search directions. Retain o
 - **运行窗口**：...
 - **发现与筛选**：共发现 N 篇；历史重复 N 篇；主清单 N 篇；观察区 N 篇；排除 N 篇
 - **收录口径**：官方首次上线即收录；后续卷期更新不重复收录
+- **评分口径**：v2（议题35／方法45／锚点10／延伸10；执行议题与方法门槛）
 
 ## AER（American Economic Review）
 
 **1.** Authors (YYYY-MM). **Title. Journal, publication status.**
 - DOI：[doi](https://doi.org/...)
-- 方向：... ｜ 贴合度：★★★★（总分 78/100：议题 34，方法 18，锚点 15，延伸 11；简短理由）
+- 方向：... ｜ 方法：结构IO ｜ 贴合度：★★★★（总分 83/100：议题 29/35，方法 37/45，锚点 9/10，延伸 8/10；具体模型、识别和反事实的借鉴价值）
 - Abstract：作者完整摘要的中文翻译。逐句对应原文、保持原句顺序和全部信息；术语应按语境自然意译，必要时用括号做一句话解释，不能机械直译。
 - 直白解释：固定三句话。第一句说现实问题；第二句说怎么做和发现什么；第三句说为什么值得用户读。
 - 官方来源：[Publisher abstract](...)
@@ -65,7 +51,7 @@ Environmental economics is secondary to the original search directions. Retain o
 1. Title ｜ Journal ｜ DOI 或 `DOI暂缺` ｜ 首次收录 YYYY-MM-DD ｜ 当前状态
 ```
 
-Include all eight journals and NBER in the coverage audit even if a main section has zero additions. Order journal sections AER/JPE/QJE/JET/IIO/RAND J/Econometrica/ReStud, then NBER, then observation/audit/cumulative records. Within each journal, order by stars descending and then first-online date descending. Use `Online First` or `Articles in Press` when volume/issue/pages are not yet assigned.
+Include all eight journals and NBER in the coverage audit even if a main section has zero additions. Order journal sections AER/JPE/QJE/JET/IIO/RAND J/Econometrica/ReStud, then NBER, then observation/audit/cumulative records. Within each journal, order by stars, final score, and first-online date descending. Use `Online First` or `Articles in Press` when volume/issue/pages are not yet assigned.
 
 Match all coauthors against the configured laureate roster when supplied. Bold matching names only, leaving other authors unbolded. Example: `**1.** **Daron Acemoglu**, Coauthor (YYYY-MM). **Title. JPE, Ahead of Print.（已下载）**`. Do not bold the entire author list or add an award label or separate laureate section. Selection and scoring depend on relevance and method, not awards.
 

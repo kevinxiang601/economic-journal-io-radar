@@ -8,6 +8,8 @@ import json
 import re
 from pathlib import Path
 
+from score_paper import score_paper
+
 
 JOURNALS = ["AER", "JPE", "QJE", "JET", "IIO", "RAND", "Econometrica", "ReStud", "NBER"]
 
@@ -34,6 +36,7 @@ def main() -> int:
     text = args.path.read_text(encoding="utf-8")
     errors: list[str] = []
     warnings: list[str] = []
+    scoring_v2 = bool(re.search(r"评分口径[^\n]*v2", text))
 
     required_sections = ["## 2星观察区", "## 覆盖审计", "## 已收录清单（累计）"]
     for section in required_sections:
@@ -42,6 +45,9 @@ def main() -> int:
 
     audit = text.split("## 覆盖审计", 1)[1] if "## 覆盖审计" in text else ""
     for journal in JOURNALS:
+        # Archived reports may predate these added discovery channels.
+        if not scoring_v2 and journal in ("ReStud", "NBER") and journal not in text:
+            continue
         if journal not in audit:
             errors.append(f"coverage audit does not mention {journal}")
 
@@ -72,7 +78,31 @@ def main() -> int:
 
     blocks = re.split(r"(?=^\*\*\d+\.)", main_text, flags=re.M)[1:]
     for idx, block in enumerate(blocks, 1):
-        if "（环境）" in block.splitlines()[0]:
+        environment = "（环境）" in block.splitlines()[0]
+        if scoring_v2:
+            components = []
+            for label, limit in (("议题", 35), ("方法", 45), ("锚点", 10), ("延伸", 10)):
+                component = re.search(rf"{label}\s*[：:]?\s*(\d+)\s*/\s*{limit}(?!\d)", block)
+                if component:
+                    components.append(int(component.group(1)))
+            if len(components) != 4:
+                errors.append(f"v2 entry {idx} requires topic/35, method/45, anchor/10, extension/10")
+            else:
+                try:
+                    result = score_paper(*components, environment=environment)
+                    total = re.search(r"总分\s*(\d+)\s*/\s*100", block)
+                    rating = re.search(r"贴合度[：:]\s*(★+)", block)
+                    if not total or int(total.group(1)) != result["final_total"]:
+                        errors.append(f"v2 entry {idx} final total must be {result['final_total']} after gates")
+                    if not rating or len(rating.group(1)) != result["stars"]:
+                        errors.append(f"v2 entry {idx} stars inconsistent with gated score")
+                    if result["placement"] != "main":
+                        errors.append(f"v2 entry {idx} fails main-list admission")
+                except ValueError as exc:
+                    errors.append(f"v2 entry {idx}: {exc}")
+            if not re.search(r"[｜|]\s*方法[：:]\s*[^｜|\n]+", block):
+                errors.append(f"v2 entry {idx} missing method type in direction line")
+        elif environment:
             rating = re.search(r"贴合度[：:]\s*(★+)", block)
             if not rating or len(rating.group(1)) not in (4, 5):
                 errors.append(f"environmental entry {idx} must be four or five stars")
@@ -112,6 +142,7 @@ def main() -> int:
     result = {
         "path": str(args.path),
         "main_entries": len(blocks),
+        "scoring_version": "v2" if scoring_v2 else "legacy",
         "doi_links": len(doi_values),
         "errors": errors,
         "warnings": warnings,
